@@ -5,6 +5,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 app = Flask(__name__)
+@app.before_request
+def force_localhost():
+    if request.host.startswith("127.0.0.1"):
+        return redirect(request.url.replace("127.0.0.1", "localhost", 1))
 app.secret_key = os.environ["SECRET_KEY"]
 app.config["SESSION_COOKIE_NAME"] = "spy_session"
 
